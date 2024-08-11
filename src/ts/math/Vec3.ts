@@ -11,6 +11,12 @@ export class Vec3 {
         this.z = z;
     }
 
+    equals(other: Vec3): boolean {
+        return (this.x == other.x
+                && this.y == other.y
+                && this.z == other.z);
+    }
+
     dot(other: Vec3): number {
         return this.x * other.x + this.y * other.y + this.z * other.z;
     }
@@ -21,5 +27,9 @@ export class Vec3 {
 
     add(other: Vec3): Vec3 {
         return new Vec3(this.x + other.x, this.y + other.y, this.z + other.z);
+    }
+
+    toString(): string {
+        return `[${this.x},${this.y},${this.z}]`;
     }
 }

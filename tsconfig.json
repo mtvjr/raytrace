@@ -4,6 +4,7 @@
         "removeComments": true,
         "outFile": "src/html/built/tsc.js",
     },
+    "esModuleInterop": true,
     "include": [
         "src/ts/**/*"
     ]
