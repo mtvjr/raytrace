@@ -24,3 +24,10 @@ export function Err<E>(error: E): ErrType<E> {
         "error": error,
     }
 }
+
+export function unwrap<T, E>(result: Result<T, E>): T {
+    if (result.ok === false) {
+        throw Error("Invalid unwrap of " + result);
+    }
+    return result.value;
+}

@@ -1,6 +1,6 @@
 
 import { Vec3 } from '../../../src/ts/math/Vec3';
-import { Ok } from '../../../src/ts/util/Result';
+import { Ok, unwrap } from '../../../src/ts/util/Result';
 
 
 describe('Vec3', () => {
@@ -29,14 +29,17 @@ describe('Vec3', () => {
         expect(baseVec.equals(diffZ)).toBeFalsy()
         expect(diffZ.equals(baseVec)).toBeFalsy()
     })
-    
-    it('Should be able to scale accurately', () => {
-        let factor = 30;
-        var vec = new Vec3(1, 2, 3)
-        var scaled = vec.scale(factor)
-        expect(scaled.x).toBe(vec.x * factor);
-        expect(scaled.y).toBe(vec.y * factor);
-        expect(scaled.z).toBe(vec.z * factor);
+
+    const scaled_tests: Array<[Vec3, number, Vec3]> = [
+        [new Vec3(1,2,3)   , 1 , new Vec3(1,2,3)],
+        [new Vec3(1,2,3)   , 2 , new Vec3(2,4,6)],
+        [new Vec3(1,2,3)   , .5, new Vec3(.5,1.0,1.5)],
+        [new Vec3(1,2,3)   , 0 , new Vec3(0,0,0)],
+        [new Vec3(-1,-2,-3), 1 , new Vec3(-1,-2,-3)],
+        [new Vec3(-1,-2,-3), 2 , new Vec3(-2,-4,-6)],
+    ]
+    it.each(scaled_tests)('%s when scaled by %d equals %s', (input, scaled_by, is) => {
+        expect(input.scale(scaled_by)).toEqual(is);
     })
 
     it('Should produce a nice toString representation', () => {
