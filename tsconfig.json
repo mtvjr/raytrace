@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
-        "module": "system",
+        "module": "ES2022",
+        "outDir": "src/html/built/",
         "removeComments": true,
-        "outFile": "src/html/built/tsc.js",
+        "skipLibCheck": true
     },
     "esModuleInterop": true,
     "include": [
