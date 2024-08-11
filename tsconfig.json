@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "module": "system",
+        "removeComments": true,
+        "outFile": "src/html/built/tsc.js",
+    },
+    "include": [
+        "src/ts/**/*"
+    ]
+}
