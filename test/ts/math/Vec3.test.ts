@@ -1,6 +1,5 @@
 
-import { Vec3 } from '../../../src/ts/math/Vec3';
-import { Ok, unwrap } from '../../../src/ts/util/Result';
+import { Vec3, Vec3ConstructorArgs } from '../../../src/ts/math/Vec3';
 
 
 describe('Vec3', () => {
@@ -36,6 +35,16 @@ describe('Vec3', () => {
         expect(diffZ.equals(baseVec)).toBeFalsy()
     })
 
+    const magnitude_tests: Array<[Vec3ConstructorArgs, number]> = [
+        // Vec  ,  mangitude
+        [[1,2,3], Math.sqrt(1*1 + 2*2 + 3*3)],
+        [[2,2,2], Math.sqrt(2*2 + 2*2 + 2*2)],
+        [[0,0,0], 0],
+    ]
+    it.each(magnitude_tests)('%s.magnitude() equals %s', (vec, mangitude) => {
+        expect(new Vec3(vec).magnitude()).toBe(mangitude)
+    })
+
     const scaled_tests: Array<[Vec3, number, Vec3]> = [
         [new Vec3([1,2,3])   , 1 , new Vec3([1,2,3])],
         [new Vec3([1,2,3])   , 2 , new Vec3([2,4,6])],
@@ -48,16 +57,17 @@ describe('Vec3', () => {
         expect(input.scale(scaled_by)).toEqual(is);
     })
 
+    const minus_tests: Array<[Vec3ConstructorArgs, Vec3ConstructorArgs, Vec3ConstructorArgs]> = [
+        // lhs  ,  rhs     , expected
+        [[1,2,3], [0, 0, 0], [1,2,3]],
+        [[1,2,3], [1, 1, 1], [0,1,2]],
+    ]
+    it.each(minus_tests)('%s.minus(%s) equals %s', (lhs, rhs, expected) => {
+        expect(new Vec3(lhs).minus(new Vec3(rhs))).toStrictEqual(new Vec3(expected))
+    })
+
     it('Should produce a nice toString representation', () => {
         expect(new Vec3([1, 2, 3]).toString()).toMatch(/[1, ?2, ?3]/)
         expect(`${new Vec3([1, 2, 3])}`).toMatch(/[1, ?2, ?3]/)
-    })
-
-    it('Should be parseable from something like [1, 2, 3]', () => {
-        expect(Vec3.parse("[1, 2, 3]")).toStrictEqual(Ok(new Vec3([1, 2, 3])));
-        expect(Vec3.parse("[1,2,3]")).toStrictEqual(Ok(new Vec3([1, 2, 3])));
-        expect(Vec3.parse("[    1,     2,     3]")).toStrictEqual(Ok(new Vec3([1, 2, 3])));
-        expect(Vec3.parse("[1, 2, 3, 4]").ok).toBe(false)
-        expect(Vec3.parse("[a, 2, 3]").ok).toBe(false)
     })
 })

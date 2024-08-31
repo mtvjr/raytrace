@@ -1,4 +1,3 @@
-import { Err, Ok, Result } from "../util/Result";
 
 type Vec2NamedArgs = {
     x: number;
@@ -31,6 +30,10 @@ export class Vec2 {
                 && this.y == other.y);
     }
 
+    magnitude(): number {
+        return Math.sqrt(this.x * this.x + this.y + this.y);
+    }
+
     dot(other: Vec2): number {
         return this.x * other.x + this.y * other.y;
     }
@@ -51,32 +54,5 @@ export class Vec2 {
 
     toString(): string {
         return `[${this.x},${this.y}]`;
-    }
-
-    static parse(input: string): Result<Vec2, string> {
-        const regex = /\[\s*(\d.?\d?),\s*(\d.?\d?)\]/ // Should match [1.2, 34]
-        const results = regex.exec(input)
-        if (results === null) {
-            return Err(`Input string "${input}" not in form [x, y, z]`);
-        }
-
-        const myNumParser = (input: string): Result<number, string> => {
-            let num = parseFloat(input)
-            if (isNaN(num)) {
-                return Err(`"${input}" is not a valid number`)
-            }
-            return Ok(num)
-        }
-
-        const x = myNumParser(results[1]);
-        if (x.ok === false) return x;
-
-        const y = myNumParser(results[2]);
-        if (y.ok === false) return y;
-
-        return Ok(new Vec2({
-            x: x.value,
-            y: y.value
-        }));
     }
 }

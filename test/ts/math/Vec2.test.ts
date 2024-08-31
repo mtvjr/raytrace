@@ -1,6 +1,5 @@
 
 import { Vec2 } from '../../../src/ts/math/Vec2';
-import { Ok, unwrap } from '../../../src/ts/util/Result';
 
 
 describe('Vec2', () => {
@@ -46,13 +45,5 @@ describe('Vec2', () => {
     it('Should produce a nice toString representation', () => {
         expect(new Vec2([1, 2]).toString()).toMatch(/[1, ?2, ?3]/)
         expect(`${new Vec2([1, 2])}`).toMatch(/[1, ?2, ?3]/)
-    })
-
-    it('Should be parseable from something like [1, 2]', () => {
-        expect(Vec2.parse("[1, 2]")).toStrictEqual(Ok(new Vec2([1, 2])));
-        expect(Vec2.parse("[1,2]")).toStrictEqual(Ok(new Vec2([1, 2])));
-        expect(Vec2.parse("[    1,     2]")).toStrictEqual(Ok(new Vec2([1, 2])));
-        expect(Vec2.parse("[1, 2, 3]").ok).toBe(false)
-        expect(Vec2.parse("[a, 2, 3]").ok).toBe(false)
     })
 })

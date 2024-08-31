@@ -7,16 +7,18 @@ export type EntityConstructorArgs = {
     position?: Vec3ConstructorArgs;
 };
 
+/**
+ * Defines which values are used if attributes are missing
+ * from the Entity constructor arguments 
+ */
 const ENTITY_DEFAULTS: EntityConstructorArgs = {
-    "position": [0, 0, 0]
+    position: [0, 0, 0]
 }
 
 export class Entity {
     position!: Vec3;
 
     constructor(args?: EntityConstructorArgs) {
-        this.position = new Vec3(args?.position === undefined
-                                    ? ENTITY_DEFAULTS.position
-                                    : args.position);
+        this.position = new Vec3(args?.position ?? ENTITY_DEFAULTS.position);
     }
 }

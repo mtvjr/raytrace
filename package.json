@@ -3,12 +3,15 @@
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "jest": "^29.7.0",
+    "nodemon": "^3.1.4",
+    "ts-add-js-extension": "^1.6.4",
     "ts-jest": "^29.2.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },
   "scripts": {
-    "build": "tsc",
-    "test": "jest"
+    "build": "tsc && ts-add-js-extension --dir=src/html/built/",
+    "test": "jest",
+    "watch": "nodemon -e ts  --exec \"npm run build\""
   }
 }

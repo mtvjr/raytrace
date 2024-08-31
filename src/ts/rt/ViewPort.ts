@@ -7,17 +7,22 @@ export type ViewPortConstructorArgs = EntityConstructorArgs & {
     size?: Vec2ConstructorArgs;
 }
 
+/**
+ * Defines which values are used if attributes are missing
+ * from the ViewPort constructor arguments 
+ */
 const VIEW_PORT_DEFAULTS: ViewPortConstructorArgs = {
     size: [480, 480]
 }
 
+/**
+ * A viewport describes the window a camera will look through
+ */
 export class ViewPort extends Entity {
     size!: Vec2;
 
     constructor(args?: ViewPortConstructorArgs) {
         super(args);
-        this.size = new Vec2(args?.size === undefined
-                             ? VIEW_PORT_DEFAULTS.size
-                             : args.size);
+        this.size = new Vec2(args?.size ?? VIEW_PORT_DEFAULTS.size);
     }
 }
