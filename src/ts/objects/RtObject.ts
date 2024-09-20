@@ -8,7 +8,7 @@ export type RtObjectConstructorArgs = EntityConstructorArgs & {
 
 /**
  * Defines which values are used if attributes are missing
- * from the Objector constructor arguments 
+ * from the Objector constructor arguments
  */
 const OBJECT_DEFAULTS: RtObjectConstructorArgs = {
     color: {} // Default color args
@@ -27,8 +27,7 @@ export abstract class RtObject extends Entity {
      * at the object
      * @param origin The position the ray shoots from
      * @param ray The direction vector of the ray
-     * @returns A collection of distances along the ray that collisions
-     *          occur.
+     * @returns A collection of intersecting points
      */
-    abstract getCollisions(origin: Vec3, ray: Vec3): Array<number>;
+    abstract getCollisions(origin: Vec3, ray: Vec3): Array<Vec3>;
 }

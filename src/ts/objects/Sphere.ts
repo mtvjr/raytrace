@@ -7,7 +7,7 @@ export type SphereConstructorArgs = RtObjectConstructorArgs & {
 
 /**
  * Defines which values are used if attributes are missing
- * from the Sphere constructor arguments 
+ * from the Sphere constructor arguments
  */
 const SPHERE_DEFAULTS : SphereConstructorArgs = {
     radius: 1,
@@ -15,33 +15,70 @@ const SPHERE_DEFAULTS : SphereConstructorArgs = {
 
 export class Sphere extends RtObject {
     radius!: number;
-    
+
     constructor(args?: SphereConstructorArgs) {
         super(args)
         this.radius = args?.radius ?? SPHERE_DEFAULTS.radius;
     }
 
-    getCollisions(origin: Vec3, ray: Vec3): Array<number> {
-        const centerToOrigin = origin.minus(this.position);
+    /**
+     * Get intersections of line and sphere.
+     * Derived from https://stackoverflow.com/a/37225895
+     * @param linePoint1 First point of a line
+     * @param linePoint2 Second point of a line
+     * @returns Array of line/spehere intersections
+     */
+    getCollisions(linePoint1: Vec3, linePoint2: Vec3): Array<Vec3> { // a line object would be cool
+        const lineVector = {
+            x: linePoint2.x - linePoint1.x,
+            y: linePoint2.y - linePoint1.y,
+            z: linePoint2.z - linePoint1.z
+        };
 
-        // Solve quadratic equation :)
-        const a = ray.dot(ray);
-        const b = 2 * centerToOrigin.dot(ray);
-        const c = centerToOrigin.dot(centerToOrigin) - (this.radius * this.radius);
+        const lineToCenter = {
+            x: linePoint1.x - this.position.x,
+            y: linePoint1.y - this.position.y,
+            z: linePoint1.z - this.position.z
+        };
 
-        const discriminant = b*b - 4*a*c;
-        if (discriminant < 0) {
-            // No collisions
+        const b = (lineVector.x * lineToCenter.x + lineVector.y * lineToCenter.y) * -2;
+        const c = 2 * (lineVector.x * lineVector.x + lineVector.y * lineVector.y);
+        const d = Math.sqrt(
+            b * b - 2 * c
+            * (lineToCenter.x * lineToCenter.x
+                + lineToCenter.y * lineToCenter.y
+                - this.radius * this.radius));
+
+        // No intercept
+        if(isNaN(d)){
             return [];
         }
 
-        const sqrt = Math.sqrt(discriminant);
-        const t1 = (-b + sqrt) / (2*a);
-        const t2 = (-b - sqrt) / (2*a);
-        if (t1 == t2) {
-            return [t1];
-        } else {
-            return [t1, t2];
+        const u1 = (b - d) / c;  // these represent the unit distance of point one and two on the line
+        const u2 = (b + d) / c;
+        let intersectingPoints = [];
+
+        // First intersection point
+        if(u1 <= 1 && u1 >= 0){
+            intersectingPoints.push(new Vec3({
+                x: linePoint1.x + lineVector.x * u1,
+                y: linePoint1.y + lineVector.y * u1,
+                z: linePoint1.z + lineVector.z * u1}));
         }
+
+        // Second intersection point
+        if(u2 <= 1 && u2 >= 0){
+            const secondIntersectionPoint = new Vec3({
+                x: linePoint1.x + lineVector.x * u2,
+                y: linePoint1.y + lineVector.y * u2,
+                z: linePoint1.z + lineVector.z * u2
+            })
+
+            if (!secondIntersectionPoint.equals(intersectingPoints[0])) {
+                intersectingPoints.push(secondIntersectionPoint);
+            }
+        }
+
+        return intersectingPoints;
     }
 }

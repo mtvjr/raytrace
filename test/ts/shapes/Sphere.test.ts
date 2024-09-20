@@ -28,34 +28,39 @@ describe('Sphere::getCollisions', () => {
             radius: 1
         });
 
-        var origin = new Vec3({x: 0, y: 0, z: 0});
-        var ray = new Vec3({x: 1, y: 0, z: 0});
+        // Two points of a line through the middle of the sphere
+        var linePoint1 = new Vec3({x: 0, y: 0, z: 0});
+        var linePoint2 = new Vec3({x: 5, y: 0, z: 0});
 
-        // We expect collisions at [1, 0, 0] and [3, 0, 0]
-        // which are at distances 1 and 3. Order does not matter.
-        var collisions = sphere.getCollisions(origin, ray);
-        expect(collisions.includes(1)).toBeTruthy()
-        expect(collisions.includes(3)).toBeTruthy()
+        var collisions = sphere.getCollisions(linePoint1, linePoint2);
+
         expect(collisions.length).toBe(2);
+
+        const correctIntersection = [new Vec3({x: 1, y: 0, z: 0})];
+        const incorrectIntersection = [new Vec3({x: 2, y: 0, z: 0})];
+        expect(collisions).toEqual(expect.arrayContaining(correctIntersection));
+        expect(collisions).not.toEqual(expect.arrayContaining(incorrectIntersection));
+
     })
 
     it('Should accurately model a 1 intersection collision', () => {
-        var spherePosition = new Vec3([2, 0, 0]);
-        var sphereRadius = 1;
-        var sphere = new Sphere({
-            position: spherePosition,
-            radius: sphereRadius
+        var sphere = new Sphere({ // Sphere top at [2, 1, 0]
+            position: new Vec3([2, 0, 0]),
+            radius: 1
         });
 
-        var origin = new Vec3({x: 0, y: 0, z: 0});
-        var ray = origin.add(spherePosition).add(new Vec3([0, sphereRadius, 0]));
+        // Two points of a line tanget to top of sphere
+        var linePoint1 = new Vec3({x: 0, y: 1, z: 0});
+        var linePoint2 = new Vec3({x: 5, y: 1, z: 0});
 
-        // We expect collisions at [2, 2, 0]
-        // which is at distance sqrt(2*2 + 1*1)
-        const distance = ray.magnitude();
-        var collisions = sphere.getCollisions(origin, ray);
-        expect(collisions.includes(distance)).toBeTruthy()
+        var collisions = sphere.getCollisions(linePoint1, linePoint2);
+
         expect(collisions.length).toBe(1);
+
+        const correctIntersection = [new Vec3({x: 2, y: 1, z: 0})];
+        const incorrectIntersection = [new Vec3({x: 1, y: 1, z: 0})];
+        expect(collisions).toMatchObject(correctIntersection)
+        expect(collisions).not.toMatchObject(incorrectIntersection)
     })
 
     it('Should accurately model a 0 intersection collision', () => {
