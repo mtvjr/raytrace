@@ -30,13 +30,13 @@ export class Vec3 {
     }
 
     equals(other: Vec3): boolean {
-        return (this.x == other.x
-                && this.y == other.y
-                && this.z == other.z);
+        return (this.x === other.x
+             && this.y === other.y
+             && this.z === other.z);
     }
 
     magnitude(): number {
-        return Math.sqrt(this.x * this.x + this.y + this.y + this.z * this.z);
+        return Math.sqrt((this.x * this.x) + (this.y * this.y) + (this.z * this.z));
     }
 
     dot(other: Vec3): number {
@@ -53,6 +53,10 @@ export class Vec3 {
 
     minus(other: Vec3): Vec3 {
         return new Vec3([this.x - other.x, this.y - other.y, this.z - other.z]);
+    }
+
+    square(): Vec3 {
+        return new Vec3([this.x * this.x, this.y * this.y, this.z * this.z]);
     }
 
     toString(): string {
