@@ -1,5 +1,5 @@
 
-import { Vec2 } from '../../../src/ts/math/Vec2';
+import { Vec2, Vec2ConstructorArgs } from '../../../src/ts/math/Vec2';
 
 
 describe('Vec2', () => {
@@ -40,6 +40,17 @@ describe('Vec2', () => {
     ]
     it.each(scaled_tests)('%s when scaled by %d equals %s', (input, scaled_by, is) => {
         expect(input.scale(scaled_by)).toEqual(is);
+    })
+
+    const magnitude_tests: Array<[Vec2ConstructorArgs, number]> = [
+        // Vec  ,  mangitude
+        [[1,2], Math.sqrt(1*1 + 2*2)],
+        [[2,2], Math.sqrt(2*2 + 2*2)],
+        [[8,7], Math.sqrt(8*8 + 7*7)],
+        [[0,0], 0],
+    ]
+    it.each(magnitude_tests)('%s.magnitude() equals %s', (vec, mangitude) => {
+        expect(new Vec2(vec).magnitude()).toBe(mangitude)
     })
 
     it('Should produce a nice toString representation', () => {

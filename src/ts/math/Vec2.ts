@@ -31,7 +31,7 @@ export class Vec2 {
     }
 
     magnitude(): number {
-        return Math.sqrt(this.x * this.x + this.y + this.y);
+        return Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
     dot(other: Vec2): number {

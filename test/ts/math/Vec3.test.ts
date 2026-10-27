@@ -39,6 +39,7 @@ describe('Vec3', () => {
         // Vec  ,  mangitude
         [[1,2,3], Math.sqrt(1*1 + 2*2 + 3*3)],
         [[2,2,2], Math.sqrt(2*2 + 2*2 + 2*2)],
+        [[8,7,10], Math.sqrt(8*8 + 7*7 + 10*10)],
         [[0,0,0], 0],
     ]
     it.each(magnitude_tests)('%s.magnitude() equals %s', (vec, mangitude) => {
