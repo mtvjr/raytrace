@@ -11,9 +11,9 @@ export type ViewPortConstructorArgs = EntityConstructorArgs & {
  * Defines which values are used if attributes are missing
  * from the ViewPort constructor arguments 
  */
-const VIEW_PORT_DEFAULTS: ViewPortConstructorArgs = {
+const VIEW_PORT_DEFAULTS = {
     size: [480, 480]
-}
+} satisfies ViewPortConstructorArgs;
 
 /**
  * A viewport describes the window a camera will look through

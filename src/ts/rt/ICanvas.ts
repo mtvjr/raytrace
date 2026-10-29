@@ -2,22 +2,29 @@ import { Color } from "../Color";
 import { Vec2 } from "../math/Vec2";
 
 export interface ICanvas {
-    setSize(size: Vec2);
+    setSize(size: Vec2): void;
     getSize(): Vec2;
 
-    setColor(pixel: Vec2, color: Color);
+    setColor(pixel: Vec2, color: Color): void;
 
-    finalize();
+    finalize(): void;
 }
 
 export class HTMLCanvasAdapater implements ICanvas {
     imageData: ImageData;
     context: CanvasRenderingContext2D
-    size = new Vec2([200, 200]);
+    size: Vec2;
 
     constructor(public canvas: HTMLCanvasElement) {
-        this.context = canvas.getContext("2d");
-        this.setSize(new Vec2([canvas.width, canvas.height]))
+        const context = canvas.getContext("2d");
+        if (context === null) {
+            throw new Error("Failed to get 2D context from canvas");
+        }
+        this.context = context;
+        this.size = new Vec2([canvas.width, canvas.height]);
+        this.canvas.width = this.size.x;
+        this.canvas.height = this.size.y;
+        this.imageData = this.context.createImageData(this.size.x, this.size.y);
     }
 
     setSize(size: Vec2) {

@@ -46,7 +46,7 @@ export class Raytracer {
     }
 
     traceRay(origin: Vec3, ray: Vec3, minDistance: number, maxDistance: number): Color {
-        var closestObject : RtObject;
+        var closestObject : RtObject | undefined;
         var closestDistance = Infinity;
 
         this.objects.forEach(sphere => {

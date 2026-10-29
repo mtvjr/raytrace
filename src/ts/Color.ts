@@ -1,12 +1,12 @@
 
 export type ColorConstructorArgs = Partial<Color>;
 
-var COLOR_DEFAULTS: ColorConstructorArgs = {
+var COLOR_DEFAULTS = {
     red: 0,
     green: 0,
     blue: 0,
     alpha: 255,
-}
+} satisfies ColorConstructorArgs;
 
 export class Color {
     private _alpha: number;
@@ -16,13 +16,13 @@ export class Color {
 
 
     constructor(args?: ColorConstructorArgs) {
-        this.red = args?.red ?? COLOR_DEFAULTS.red;
-        this.green = args?.green ?? COLOR_DEFAULTS.green;
-        this.blue = args?.blue ?? COLOR_DEFAULTS.blue;
-        this.alpha = args?.alpha ?? COLOR_DEFAULTS.alpha;
+        this._red = Color.validateColorChannel(args?.red ?? COLOR_DEFAULTS.red);
+        this._green = Color.validateColorChannel(args?.green ?? COLOR_DEFAULTS.green);
+        this._blue = Color.validateColorChannel(args?.blue ?? COLOR_DEFAULTS.blue);
+        this._alpha = Color.validateColorChannel(args?.alpha ?? COLOR_DEFAULTS.alpha);
     }
 
-    private validate(n: number) {
+    public static validateColorChannel(n: number): number {
         if (Number.isInteger(n) === false) {
             throw new Error("Color values must be integral")
         }
@@ -30,6 +30,8 @@ export class Color {
         if (n < 0 || n > 255) {
             throw new Error("Color values must be between 0 and 255")
         }
+
+        return n;
     }
     
 
@@ -38,8 +40,7 @@ export class Color {
     }
 
     set alpha(a: number) {
-        this.validate(a)
-        this._alpha = a;
+        this._alpha = Color.validateColorChannel(a);
     }
 
     get red() {
@@ -47,8 +48,7 @@ export class Color {
     }
 
     set red(r: number) {
-        this.validate(r)
-        this._red = r;
+        this._red = Color.validateColorChannel(r);
     }
 
     get green() {
@@ -56,8 +56,7 @@ export class Color {
     }
 
     set green(g: number) {
-        this.validate(g)
-        this._green = g;
+        this._green = Color.validateColorChannel(g);
     }
 
     get blue() {
@@ -65,8 +64,7 @@ export class Color {
     }
 
     set blue(b: number) {
-        this.validate(b)
-        this._blue = b;
+        this._blue = Color.validateColorChannel(b);
     }
 
     toString(): string {

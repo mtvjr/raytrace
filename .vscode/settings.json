@@ -1,3 +1,4 @@
 {
-    "livePreview.defaultPreviewPath": "/src/html/main.html"
+    "livePreview.defaultPreviewPath": "/src/html/main.html",
+    "js/ts.tsdk.path": "node_modules/typescript/lib"
 }

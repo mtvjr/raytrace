@@ -9,9 +9,9 @@ export type SphereConstructorArgs = RtObjectConstructorArgs & {
  * Defines which values are used if attributes are missing
  * from the Sphere constructor arguments 
  */
-const SPHERE_DEFAULTS : SphereConstructorArgs = {
+const SPHERE_DEFAULTS = {
     radius: 1,
-};
+} satisfies SphereConstructorArgs;
 
 export class Sphere extends RtObject {
     radius!: number;
