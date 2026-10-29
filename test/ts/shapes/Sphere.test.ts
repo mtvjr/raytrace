@@ -40,22 +40,21 @@ describe('Sphere::getCollisions', () => {
     })
 
     it('Should accurately model a 1 intersection collision', () => {
-        var spherePosition = new Vec3([2, 0, 0]);
-        var sphereRadius = 1;
+        // Create a sphere around origin,
+        // then send a ray tangent to the sphere's surface, which should only intersect once
         var sphere = new Sphere({
-            position: spherePosition,
-            radius: sphereRadius
+            position: new Vec3([0, 0, 0]),
+            radius: 30
         });
 
-        var origin = new Vec3({x: 0, y: 0, z: 0});
-        var ray = origin.add(spherePosition).add(new Vec3([0, sphereRadius, 0]));
+        var origin = new Vec3({x: -5, y: sphere.radius, z: 0});
+        var ray = new Vec3({x: 1, y: 0, z: 0}); // Aim along the x axis
 
         // We expect collisions at [2, 2, 0]
         // which is at distance sqrt(2*2 + 1*1)
-        const distance = ray.magnitude();
         var collisions = sphere.getCollisions(origin, ray);
-        expect(collisions.includes(distance)).toBeTruthy()
         expect(collisions.length).toBe(1);
+        expect(collisions[0]).toBeCloseTo(5);
     })
 
     it('Should accurately model a 0 intersection collision', () => {
